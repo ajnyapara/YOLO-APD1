@@ -63,6 +63,7 @@ from ultralytics.nn.modules import (
 )
 from ultralytics.utils import DEFAULT_CFG_DICT, DEFAULT_CFG_KEYS, LOGGER, colorstr, emojis, yaml_load
 from ultralytics.utils.checks import check_requirements, check_suffix, check_yaml
+from ultralytics.nn.modules.conv import BiFPN_Concat2, BiFPN_Concat3
 from ultralytics.utils.loss import (
     E2EDetectLoss,
     v8ClassificationLoss,
@@ -1040,6 +1041,9 @@ def parse_model(d, ch, verbose=True):  # model_dict, input_channels(3)
         elif m is nn.BatchNorm2d:
             args = [ch[f]]
         elif m is Concat:
+            c2 = sum(ch[x] for x in f)
+         # 添加bifpn_concat结构
+        elif m in [Concat, BiFPN_Concat2, BiFPN_Concat3]:
             c2 = sum(ch[x] for x in f)
         elif m in {Detect, WorldDetect, Segment, Pose, OBB, ImagePoolingAttn, v10Detect}:
             args.append([ch[x] for x in f])
