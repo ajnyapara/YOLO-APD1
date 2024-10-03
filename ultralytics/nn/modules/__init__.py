@@ -57,6 +57,7 @@ from .block import (
     ResNetLayer,
     SCDown,
 )
+from .simam import( SimAM)
 from .conv import (
     CBAM,
     ChannelAttention,
